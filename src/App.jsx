@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 
-const tg = window.Telegram.WebApp;
+const tg = window.Telegram?.WebApp;
 
 function App() {
     const [activeTab, setActiveTab] = useState("Discipline");
@@ -9,11 +9,12 @@ function App() {
     const [formData, setFormData] = useState({});
 
     useEffect(() => {
-        tg.ready();
-        tg.expand();
+        if (tg) {
+            tg.ready();
+            tg.expand();
+        }
     }, []);
 
-    // Очищаем форму при смене вкладки или действия
     useEffect(() => {
         setFormData({});
     }, [activeTab, action]);
@@ -58,27 +59,9 @@ function App() {
             };
         }
 
-        tg.sendData(JSON.stringify(payload));
-    };
-
-    const appBgStyle = {
-        backgroundColor: "var(--tg-theme-secondary-bg-color, #f3f2f8)",
-        color: "var(--tg-theme-text-color, #000000)",
-        minHeight: "100vh",
-        paddingBottom: "90px",
-    };
-
-    const inputStyle = {
-        backgroundColor: "var(--tg-theme-bg-color, #ffffff)",
-        color: "var(--tg-theme-text-color, #000000)",
-        borderColor: "var(--tg-theme-hint-color, #ced4da)",
-    };
-
-    const labelStyle = {
-        color: "var(--tg-theme-hint-color, #6c757d)",
-        fontWeight: "500",
-        fontSize: "0.9rem",
-        marginBottom: "0.25rem",
+        if (tg) {
+            tg.sendData(JSON.stringify(payload));
+        }
     };
 
     const renderBottomTab = (id, label, iconClass) => {
@@ -90,9 +73,7 @@ function App() {
                 style={{
                     flex: 1,
                     cursor: "pointer",
-                    color: isActive
-                        ? "var(--tg-theme-button-color, #007aff)"
-                        : "var(--tg-theme-hint-color, #999999)",
+                    color: isActive ? "#0d6efd" : "#6c757d",
                     transition: "color 0.2s",
                 }}
             >
@@ -114,41 +95,22 @@ function App() {
     };
 
     return (
-        <div style={appBgStyle}>
-            {/* Header */}
-            <div
-                className="pt-4 pb-2 px-3 mb-3 shadow-sm"
-                style={{ backgroundColor: "var(--tg-theme-bg-color, #ffffff)" }}
-            >
-                <h2
-                    className="m-0 text-center"
-                    style={{
-                        fontSize: "1.25rem",
-                        fontWeight: "bold",
-                        color: "var(--tg-theme-text-color, #000000)",
-                    }}
-                >
+        <div className="bg-light" style={{ minHeight: "100vh", paddingBottom: "90px" }}>
+            <div className="pt-4 pb-2 px-3 mb-3 shadow-sm bg-white">
+                <h2 className="m-0 text-center fw-bold h5">
                     {activeTab === "Discipline"
                         ? "Disciplines"
                         : activeTab === "StudyGroup"
-                          ? "Study Groups"
-                          : "Relations"}
+                            ? "Study Groups"
+                            : "Relations"}
                 </h2>
             </div>
 
-            {/* Main Content */}
             <div className="container">
-                {/* Action Selector */}
-                <div
-                    className="mb-4 p-3 rounded shadow-sm"
-                    style={{
-                        backgroundColor: "var(--tg-theme-bg-color, #ffffff)",
-                    }}
-                >
-                    <label style={labelStyle}>Action Type</label>
+                <div className="mb-4 p-3 rounded shadow-sm bg-white">
+                    <label className="form-label fw-medium small text-muted mb-1">Action Type</label>
                     <select
-                        className="form-select form-select-lg"
-                        style={inputStyle}
+                        className="form-select"
                         value={action}
                         onChange={(e) => setAction(e.target.value)}
                     >
@@ -159,41 +121,31 @@ function App() {
                     </select>
                 </div>
 
-                {/* Dynamic Form */}
-                <div
-                    className="p-3 rounded shadow-sm mb-4"
-                    style={{
-                        backgroundColor: "var(--tg-theme-bg-color, #ffffff)",
-                    }}
-                >
-                    {/* DISCIPLINE */}
+                <div className="p-3 rounded shadow-sm mb-4 bg-white">
                     {activeTab === "Discipline" && (
                         <>
-                            {/* Для Read, Update и Delete нам нужен ID */}
                             {(action === "Read" ||
                                 action === "Update" ||
                                 action === "Delete") && (
-                                <div className="mb-3">
-                                    <label style={labelStyle}>
-                                        Discipline ID
-                                    </label>
-                                    <input
-                                        className="form-control"
-                                        style={inputStyle}
-                                        type="number"
-                                        name="id"
-                                        onChange={handleChange}
-                                        value={formData.id || ""}
-                                    />
-                                </div>
-                            )}
+                                    <div className="mb-3">
+                                        <label className="form-label fw-medium small text-muted mb-1">
+                                            Discipline ID
+                                        </label>
+                                        <input
+                                            className="form-control"
+                                            type="number"
+                                            name="id"
+                                            onChange={handleChange}
+                                            value={formData.id || ""}
+                                        />
+                                    </div>
+                                )}
                             {(action === "Create" || action === "Update") && (
                                 <>
                                     <div className="mb-3">
-                                        <label style={labelStyle}>Name</label>
+                                        <label className="form-label fw-medium small text-muted mb-1">Name</label>
                                         <input
                                             className="form-control"
-                                            style={inputStyle}
                                             type="text"
                                             name="name"
                                             onChange={handleChange}
@@ -201,10 +153,9 @@ function App() {
                                         />
                                     </div>
                                     <div className="mb-3">
-                                        <label style={labelStyle}>Type</label>
+                                        <label className="form-label fw-medium small text-muted mb-1">Type</label>
                                         <input
                                             className="form-control"
-                                            style={inputStyle}
                                             type="text"
                                             name="type"
                                             onChange={handleChange}
@@ -212,12 +163,11 @@ function App() {
                                         />
                                     </div>
                                     <div className="mb-3">
-                                        <label style={labelStyle}>
+                                        <label className="form-label fw-medium small text-muted mb-1">
                                             Faculties
                                         </label>
                                         <input
                                             className="form-control"
-                                            style={inputStyle}
                                             type="text"
                                             name="faculties"
                                             onChange={handleChange}
@@ -225,12 +175,11 @@ function App() {
                                         />
                                     </div>
                                     <div className="mb-3">
-                                        <label style={labelStyle}>
+                                        <label className="form-label fw-medium small text-muted mb-1">
                                             Difficulty (1-10)
                                         </label>
                                         <input
                                             className="form-control"
-                                            style={inputStyle}
                                             type="number"
                                             name="difficulty"
                                             onChange={handleChange}
@@ -242,14 +191,12 @@ function App() {
                         </>
                     )}
 
-                    {/* STUDY GROUP */}
                     {activeTab === "StudyGroup" && (
                         <>
                             <div className="mb-3">
-                                <label style={labelStyle}>Group ID</label>
+                                <label className="form-label fw-medium small text-muted mb-1">Group ID</label>
                                 <input
                                     className="form-control"
-                                    style={inputStyle}
                                     type="text"
                                     name="id"
                                     maxLength={6}
@@ -261,12 +208,11 @@ function App() {
                             {(action === "Create" || action === "Update") && (
                                 <>
                                     <div className="mb-3">
-                                        <label style={labelStyle}>
+                                        <label className="form-label fw-medium small text-muted mb-1">
                                             Specialization Code
                                         </label>
                                         <input
                                             className="form-control"
-                                            style={inputStyle}
                                             type="number"
                                             name="specialization"
                                             onChange={handleChange}
@@ -276,12 +222,11 @@ function App() {
                                         />
                                     </div>
                                     <div className="mb-3">
-                                        <label style={labelStyle}>
+                                        <label className="form-label fw-medium small text-muted mb-1">
                                             Course (Year)
                                         </label>
                                         <input
                                             className="form-control"
-                                            style={inputStyle}
                                             type="number"
                                             name="course"
                                             onChange={handleChange}
@@ -289,12 +234,11 @@ function App() {
                                         />
                                     </div>
                                     <div className="mb-3">
-                                        <label style={labelStyle}>
+                                        <label className="form-label fw-medium small text-muted mb-1">
                                             Education Type
                                         </label>
                                         <input
                                             className="form-control"
-                                            style={inputStyle}
                                             type="text"
                                             name="educationType"
                                             onChange={handleChange}
@@ -302,12 +246,11 @@ function App() {
                                         />
                                     </div>
                                     <div className="mb-3">
-                                        <label style={labelStyle}>
+                                        <label className="form-label fw-medium small text-muted mb-1">
                                             Students Count
                                         </label>
                                         <input
                                             className="form-control"
-                                            style={inputStyle}
                                             type="number"
                                             name="studentsCount"
                                             onChange={handleChange}
@@ -319,15 +262,12 @@ function App() {
                         </>
                     )}
 
-                    {/* GROUP DISCIPLINE */}
                     {activeTab === "GroupDiscipline" && (
                         <>
-                            {/* Эти поля нужны всегда (это составной ключ) */}
                             <div className="mb-3">
-                                <label style={labelStyle}>Group ID</label>
+                                <label className="form-label fw-medium small text-muted mb-1">Group ID</label>
                                 <input
                                     className="form-control"
-                                    style={inputStyle}
                                     type="text"
                                     name="groupId"
                                     onChange={handleChange}
@@ -335,10 +275,9 @@ function App() {
                                 />
                             </div>
                             <div className="mb-3">
-                                <label style={labelStyle}>Discipline ID</label>
+                                <label className="form-label fw-medium small text-muted mb-1">Discipline ID</label>
                                 <input
                                     className="form-control"
-                                    style={inputStyle}
                                     type="number"
                                     name="disciplineId"
                                     onChange={handleChange}
@@ -346,10 +285,9 @@ function App() {
                                 />
                             </div>
                             <div className="mb-3">
-                                <label style={labelStyle}>Semester</label>
+                                <label className="form-label fw-medium small text-muted mb-1">Semester</label>
                                 <input
                                     className="form-control"
-                                    style={inputStyle}
                                     type="number"
                                     name="semester"
                                     onChange={handleChange}
@@ -359,10 +297,9 @@ function App() {
 
                             {(action === "Create" || action === "Update") && (
                                 <div className="mb-3">
-                                    <label style={labelStyle}>Exam Type</label>
+                                    <label className="form-label fw-medium small text-muted mb-1">Exam Type</label>
                                     <input
                                         className="form-control"
-                                        style={inputStyle}
                                         type="text"
                                         name="examType"
                                         onChange={handleChange}
@@ -374,29 +311,19 @@ function App() {
                     )}
 
                     <button
-                        className="btn btn-lg w-100 mt-3 shadow-sm"
+                        className="btn btn-primary btn-lg w-100 mt-3 shadow-sm fw-bold"
                         onClick={sendDataToBot}
-                        style={{
-                            backgroundColor:
-                                "var(--tg-theme-button-color, #007aff)",
-                            color: "var(--tg-theme-button-text-color, #ffffff)",
-                            fontWeight: "bold",
-                        }}
                     >
                         Send to Bot
                     </button>
                 </div>
             </div>
 
-            {/* iOS-Style Bottom Navigation */}
             <div
-                className="fixed-bottom shadow-lg border-top"
+                className="fixed-bottom shadow-lg border-top bg-white d-flex justify-content-around"
                 style={{
-                    backgroundColor: "var(--tg-theme-bg-color, #ffffff)",
                     paddingTop: "8px",
                     paddingBottom: "calc(8px + env(safe-area-inset-bottom))",
-                    display: "flex",
-                    justifyContent: "space-around",
                 }}
             >
                 {renderBottomTab("Discipline", "Disciplines", "bi-book")}
@@ -412,3 +339,4 @@ function App() {
 }
 
 export default App;
+
