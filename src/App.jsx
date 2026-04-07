@@ -95,20 +95,25 @@ function App() {
     };
 
     return (
-        <div className="bg-light" style={{ minHeight: "100vh", paddingBottom: "90px" }}>
+        <div
+            className="bg-light"
+            style={{ minHeight: "100vh", paddingBottom: "90px" }}
+        >
             <div className="pt-4 pb-2 px-3 mb-3 shadow-sm bg-white">
                 <h2 className="m-0 text-center fw-bold h5">
                     {activeTab === "Discipline"
                         ? "Disciplines"
                         : activeTab === "StudyGroup"
-                            ? "Study Groups"
-                            : "Relations"}
+                          ? "Study Groups"
+                          : "Relations"}
                 </h2>
             </div>
 
             <div className="container">
                 <div className="mb-4 p-3 rounded shadow-sm bg-white">
-                    <label className="form-label fw-medium small text-muted mb-1">Action Type</label>
+                    <label className="form-label fw-medium small text-muted mb-1">
+                        Action Type
+                    </label>
                     <select
                         className="form-select"
                         value={action}
@@ -127,23 +132,25 @@ function App() {
                             {(action === "Read" ||
                                 action === "Update" ||
                                 action === "Delete") && (
-                                    <div className="mb-3">
-                                        <label className="form-label fw-medium small text-muted mb-1">
-                                            Discipline ID
-                                        </label>
-                                        <input
-                                            className="form-control"
-                                            type="number"
-                                            name="id"
-                                            onChange={handleChange}
-                                            value={formData.id || ""}
-                                        />
-                                    </div>
-                                )}
+                                <div className="mb-3">
+                                    <label className="form-label fw-medium small text-muted mb-1">
+                                        Discipline ID
+                                    </label>
+                                    <input
+                                        className="form-control"
+                                        type="number"
+                                        name="id"
+                                        onChange={handleChange}
+                                        value={formData.id || ""}
+                                    />
+                                </div>
+                            )}
                             {(action === "Create" || action === "Update") && (
                                 <>
                                     <div className="mb-3">
-                                        <label className="form-label fw-medium small text-muted mb-1">Name</label>
+                                        <label className="form-label fw-medium small text-muted mb-1">
+                                            Name
+                                        </label>
                                         <input
                                             className="form-control"
                                             type="text"
@@ -153,7 +160,9 @@ function App() {
                                         />
                                     </div>
                                     <div className="mb-3">
-                                        <label className="form-label fw-medium small text-muted mb-1">Type</label>
+                                        <label className="form-label fw-medium small text-muted mb-1">
+                                            Type
+                                        </label>
                                         <input
                                             className="form-control"
                                             type="text"
@@ -194,7 +203,9 @@ function App() {
                     {activeTab === "StudyGroup" && (
                         <>
                             <div className="mb-3">
-                                <label className="form-label fw-medium small text-muted mb-1">Group ID</label>
+                                <label className="form-label fw-medium small text-muted mb-1">
+                                    Group ID
+                                </label>
                                 <input
                                     className="form-control"
                                     type="text"
@@ -265,7 +276,9 @@ function App() {
                     {activeTab === "GroupDiscipline" && (
                         <>
                             <div className="mb-3">
-                                <label className="form-label fw-medium small text-muted mb-1">Group ID</label>
+                                <label className="form-label fw-medium small text-muted mb-1">
+                                    Group ID
+                                </label>
                                 <input
                                     className="form-control"
                                     type="text"
@@ -275,7 +288,9 @@ function App() {
                                 />
                             </div>
                             <div className="mb-3">
-                                <label className="form-label fw-medium small text-muted mb-1">Discipline ID</label>
+                                <label className="form-label fw-medium small text-muted mb-1">
+                                    Discipline ID
+                                </label>
                                 <input
                                     className="form-control"
                                     type="number"
@@ -285,7 +300,9 @@ function App() {
                                 />
                             </div>
                             <div className="mb-3">
-                                <label className="form-label fw-medium small text-muted mb-1">Semester</label>
+                                <label className="form-label fw-medium small text-muted mb-1">
+                                    Semester
+                                </label>
                                 <input
                                     className="form-control"
                                     type="number"
@@ -297,7 +314,9 @@ function App() {
 
                             {(action === "Create" || action === "Update") && (
                                 <div className="mb-3">
-                                    <label className="form-label fw-medium small text-muted mb-1">Exam Type</label>
+                                    <label className="form-label fw-medium small text-muted mb-1">
+                                        Exam Type
+                                    </label>
                                     <input
                                         className="form-control"
                                         type="text"
@@ -320,7 +339,7 @@ function App() {
             </div>
 
             <div
-                className="fixed-bottom shadow-lg border-top bg-white d-flex justify-content-around"
+                className="fixed-bottom shadow-lg pb-4 border-top bg-white d-flex justify-content-around"
                 style={{
                     paddingTop: "8px",
                     paddingBottom: "calc(8px + env(safe-area-inset-bottom))",
@@ -339,4 +358,3 @@ function App() {
 }
 
 export default App;
-
